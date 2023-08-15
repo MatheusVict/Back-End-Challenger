@@ -4,6 +4,7 @@ import dev.matheusvictor.backendchallenger.domain.transaction.Transaction;
 import dev.matheusvictor.backendchallenger.domain.user.User;
 import dev.matheusvictor.backendchallenger.dtos.TransactionDTO;
 import dev.matheusvictor.backendchallenger.repositories.TransactionRepository;
+import dev.matheusvictor.backendchallenger.service.NotificationService;
 import dev.matheusvictor.backendchallenger.service.TransactionService;
 import dev.matheusvictor.backendchallenger.service.UserService;
 import lombok.AllArgsConstructor;
@@ -26,8 +27,10 @@ public class TransactionServiceImpl implements TransactionService {
 
   private final RestTemplate restTemplate;
 
+  private final NotificationService notificationService;
+
   @Override
-  public void createTransaction(TransactionDTO transactionDTO) throws Exception {
+  public Transaction createTransaction(TransactionDTO transactionDTO) throws Exception {
     User sender = this.userService.findUserById(transactionDTO.senderId());
     User receiver = this.userService.findUserById(transactionDTO.receiverId());
 
@@ -45,6 +48,11 @@ public class TransactionServiceImpl implements TransactionService {
     this.transactionRepository.save(newTransaction);
     this.userService.saveUser(sender);
     this.userService.saveUser(receiver);
+
+    this.notificationService.sendNotification(sender, "transaction with success");
+    this.notificationService.sendNotification(receiver, "transaction with success");
+
+    return newTransaction;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package dev.matheusvictor.backendchallenger.domain.user;
 
+import dev.matheusvictor.backendchallenger.dtos.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,4 +38,14 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   private UserType userType;
+
+  public User(UserDTO userData) {
+    this.firstName = userData.firstName();
+    this.document = userData.document();
+    this.lastName = userData.lastName();
+    this.balance = userData.balance();
+    this.userType = userData.userType();
+    this.password = userData.password();
+    this.email = userData.email();
+  }
 }
