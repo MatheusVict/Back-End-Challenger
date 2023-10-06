@@ -62,9 +62,11 @@ return:
 
 ```/transactions```
 > POST
+```json
 
 {
   "value": 78.6,
   "senderId": 1,
   "receiverId": 2
 }
+```
